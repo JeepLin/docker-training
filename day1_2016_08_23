@@ -1,0 +1,42 @@
+Dockerfile：自动构建docker镜像的配置文件
+
+docker   build    生成docker镜像
+
+1、dockerfile文件格式：
+FROM  基础镜像，父镜像 
+MAINTAINER   维护者
+ENV   环境变量 ，可以写多个
+ADD  copy文件
+ONBUILD  在下一个镜像中生效
+RUN  运行命令  eg: RUN mkdir -p /etc/mysql/
+EXPOSE  8080   443     暴露端口
+ENTRYPOINT   只有最后一条生效，每次container启动的时候需要执行的命令
+
+2、docker  build 镜像构建：使用docker file生成docker镜像
+docker build  -t  tag：1.0   .     //生成docker镜像
+如果没有写1.0，则默认为lastest
+eg:   docker build -t  csphere/centos:7.1   .
+
+3、docker   images   // 查看本地所有的docker镜像
+
+4、docker run ： 将docker镜像生成docker容器
+docker  run  -it   //交互式模式启动容器
+Docker  run  -d  //容器后端启动，返回容器id号
+Docker  run  -p 2222：22   // 宿主机对应端口号为2222
+Docker  run  -P  // 宿主机随机产生端口号对应EXPOST端口号
+Docker  --name  //名字
+Docker --rm //容器一退出 就删除该容器
+Docker -e  //环境变量 
+docker run -d  -p 2222:22 --name base csphere/centos:7.1
+Docker run -d  -p 80:80  --name  wordpress  -e  WORDPRESS_DB_HOST= 127.0.0.1
+  -e  WORDPRESS_DB_USER= admin  -e  WORDPRESS_DB_PASSWORD=klook  csphere/wordpress:4.2
+
+5、docker ps :  返回处于running状态下的container
+      docker ps  -a：返回所有的container
+
+6、docker   exec  -it   website  /bin/bash ：交互式模式进入website 的container里面
+7、 docker rm -f  dbserver  ： 将在up状态下的dbserver container强制删除
+8、docker run -d -p  3306:3306  -v  host_dir: container_dir --name base  csphere/centos:7.1
+
+9、docker  stop  d03   // 停止一个容器
+
